@@ -3,36 +3,45 @@ NUMERO_CARTE = 5
 
 def check(mani):
 
+    valid = True
     mani_concatenate = [item for sublist in mani for item in sublist]
 
     # Ogni carta ha due caratteri
     for carta in mani_concatenate:
         if len(carta) != 2:
-            raise Exception("Carta non valida: " + carta + " COGLIONE")
-
+            print("Carta non valida: " + carta + " COGLIONE")
+            valid = False
+            break
     # Le carte devono essere NUMERO_CARTE
     for mano in mani:
         if len(mano) != NUMERO_CARTE:
-            raise Exception(
-                "Mano non valida: numero non corretto di carte COGLIONE")
-
+            print("Mano non valida: numero non corretto di carte COGLIONE")
+            valid = False
+            break
     # Controllo semi
     for mano in mani:
         for carta in mano:
             if carta[1] not in ['1', '2', '3', '4']:
-                raise Exception("Seme non valido. Carta: " +
-                                carta + " COGLIONE")
+                print("Seme non valido. Carta: " + carta + " COGLIONE")
+                valid = False
+                break
 
     # Controllo valori
     for mano in mani:
         for carta in mano:
             if carta[0] not in ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']:
-                raise Exception("Valore non valido: " + carta + " COGLIONE")
+                print("Valore non valido: " + carta + " COGLIONE")
+                valid = False
+                break
 
     # Controllo doppioni
     for carta in mani_concatenate:
         if mani_concatenate.count(carta) > 1:
-            raise Exception("Carta ripetuta: " + carta + " COGLIONE")
+            print("Carta ripetuta: " + carta + " COGLIONE")
+            valid = False
+            break
+
+    return valid
 
 
 def is_colore(mano):
@@ -205,37 +214,20 @@ def valore_carta_più_alta(mano):
 def valutazione(mano):
 
     if is_scala_reale(mano):
-        return "scala reale", 8000 + valore_scala_reale(mano)
+        return "scala reale", 8000 + valore_scala_reale(mano), mano
     elif is_poker(mano):
-        return "poker", 7000 + valore_poker(mano)
+        return "poker", 7000 + valore_poker(mano), mano
     elif is_full(mano):
-        return "full", 6000 + valore_full(mano)
+        return "full", 6000 + valore_full(mano), mano
     elif is_colore(mano):
-        return "colore", 5000 + valore_colore(mano)
+        return "colore", 5000 + valore_colore(mano), mano
     elif is_scala(mano):
-        return "scala", 4000 + valore_scala(mano)
+        return "scala", 4000 + valore_scala(mano), mano
     elif any(is_tris(mano, valore) for valore in valori(mano)):
-        return "tris", 3000 + valore_tris(mano)
+        return "tris", 3000 + valore_tris(mano), mano
     elif is_doppia_coppia(mano):
-        return "doppia coppia", 2000 + valore_doppia_coppia(mano)
+        return "doppia coppia", 2000 + valore_doppia_coppia(mano), mano
     elif any(is_coppia(mano, valore) for valore in valori(mano)):
-        return "coppia", 1000 + valore_coppia(mano)
+        return "coppia", 1000 + valore_coppia(mano), mano
     else:
-        return "nullo", valore_carta_più_alta(mano)
-
-# N = int(input())
-# while N < 2 and N > 6:
-#     N = int(input())
-
-# mani = []
-# for _ in range(N):
-#     mano = input().split(", ")
-#     mani.append(mano)
-
-# check(mani)
-
-
-mano = "K1 32 K2 T3 22".split(" ")
-
-check([mano])
-print(valutazione(mano))
+        return "nullo", valore_carta_più_alta(mano), mano
