@@ -1,0 +1,64 @@
+input errati
+35 T6 32 72 21
+G2 34 52 63 43
+82 85 H1 L2 20
+
+input nulli
+K1 32 Q2 T3 22
+11 23 34 42 T2
+93 63 52 J1 32
+
+input coppia
+K1 32 K2 T3 22
+11 23 34 42 12
+93 63 52 91 32
+
+input doppia_coppia
+34 54 31 62 51
+11 23 24 K1 K4
+34 32 54 51 T1
+
+input tris
+T1 34 T2 43 T4
+12 11 13 43 92
+54 83 84 81 62
+
+input scala
+12 21 42 53 34
+T4 12 K4 Q1 J3
+34 61 72 53 84
+
+input colore
+T4 54 64 84 94
+51 61 71 91 T1
+K2 32 72 82 52
+
+input full
+T1 44 T2 43 T4
+12 11 13 93 92
+64 83 84 81 62
+
+input poker
+T1 44 T2 T3 T4
+12 11 13 93 14
+64 83 84 81 82
+
+input scala_reale
+12 22 42 52 32
+T3 13 K3 Q3 J3
+31 61 71 51 81
+
+input partite_2
+K2 32 72 82 52
+11 23 24 K1 K4
+
+input partite_3
+12 22 42 52 32
+T1 44 T2 43 T4
+93 63 53 91 41
+
+input partite_4
+12 21 42 53 34
+K1 32 K2 T3 22
+54 83 84 81 62
+33 51 31 63 52
