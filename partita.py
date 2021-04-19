@@ -24,7 +24,22 @@ def pesca(mazzo, num_carte):
 
 
 def usernames(giocatori):
-    return list(map(lambda g: g['username'], giocatori))
+    return list(giocatori.keys())
+
+
+def fine_partita():
+    print("""
+    FFFFFFFFFFFFFFFFF     III      NNN          NNN     EEEEEEEEEEEEEEEE
+    FFFFFFFFFFFFFFFFF     III      NNNNN        NNN     EEEEEEEEEEEEEEEE
+    FFF                   III      NNNNNN       NNN     EEE
+    FFF                   III      NNN NNN      NNN     EEE
+    FFFFFFFFFFF           III      NNN  NNN     NNN     EEE
+    FFFFFFFFFFF           III      NNN   NNN    NNN     EEEEEEEE
+    FFF                   III      NNN    NNN   NNN     EEE
+    FFF                   III      NNN     NNN  NNN     EEE
+    FFF                   III      NNN      NNN NNN     EEE
+    FFF                   III      NNN       NNNNNN     EEEEEEEEEEEEEEEE
+    FFF                   III      NNN        NNNNN     EEEEEEEEEEEEEEEE """)
 
 
 mazzo = [
@@ -50,21 +65,42 @@ assert NUM_GIOCATORI <= MAX_GIOCATORI
 # Fase 0
 print('*** POKER STARS . GREG ***')
 NUM_GIOCATORI = int(input("Benvenuti! Quanti giocatori siete? "))
-while NUM_GIOCATORI <= 0 or NUM_GIOCATORI > MAX_GIOCATORI:
+while NUM_GIOCATORI <= 1 or NUM_GIOCATORI > MAX_GIOCATORI:
     NUM_GIOCATORI = int(
         input("Numero di giocatori non valido. Quanti giocatori siete? "))
 
 shuffle(mazzo)
 
-giocatori = []
+giocatori = {}
 for _ in range(NUM_GIOCATORI):
     nuovo_giocatore = giocatore.copy()
     username = input("Username: ")
     if username in usernames(giocatori):
         username = input("Username già in uso. Username: ")
-    nuovo_giocatore['username'] = username
-    nuovo_giocatore['denaro'] = DENARO_INIZIALE
-    nuovo_giocatore['mano'] = pesca(mazzo, 5)
-    giocatori.append(nuovo_giocatore)
+    giocatori[username] = {
+        "denaro": DENARO_INIZIALE,
+        "mano": pesca(mazzo, 5)
+    }
 
 # Fase 1: invito
+lista_giocatori = usernames(giocatori)
+
+print(lista_giocatori[0], "Vuoi inserire un invito?")
+
+if input()== "yes":
+    somma = int(input("Inserisci il valore dell'invito: "))
+    while somma<0 or somma>giocatori[lista_giocatori[0]]["denaro"]:
+        somma = int(input("Inserisci il valore dell'invito: "))
+    
+    giocatori[lista_giocatori[0]]["denaro"] -= somma
+
+    for giocatore in lista_giocatori[1:]:
+        print(giocatore, ", vuoi partecipare alla partita? ")
+        if input()== "yes":
+            giocatori[giocatore]["denaro"] -= somma
+        else:
+            giocatori.pop(giocatore)
+            lista_giocatori.remove(giocatore)
+    
+    if len(lista_giocatori) == 1:
+        fine_partita()
